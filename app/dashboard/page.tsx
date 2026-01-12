@@ -1,5 +1,6 @@
 import { Wrench, Car, Euro, ClipboardList } from "lucide-react";
-import BrandSlider from "@/components/sliders/BrandSlider";
+
+import "@/styles/dashboard.css";
 
 export default function Home() {
   const stats = [
@@ -50,66 +51,51 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-100 text-zinc-900">
+    <div className="dashboard">
       {/* Header */}
-      <header className="border-b border-zinc-200 bg-white px-8 py-4">
-        <h1 className="text-xl font-semibold tracking-tight">
-          Dashboard · Oficina Auto
-        </h1>
-        <p className="text-sm text-zinc-500">
-          Visão geral da atividade diária
-        </p>
+      <header className="dashboard-header">
+        <h1>Dashboard · Oficina Auto</h1>
+        <p>Visão geral da atividade diária</p>
       </header>
 
-      <main className="px-8 py-6 space-y-8">
+      <main className="dashboard-main">
         {/* Stats */}
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="stats-grid">
           {stats.map((stat) => (
-            <div
-              key={stat.title}
-              className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-center justify-between">
+            <div key={stat.title} className="stat-card">
+              <div className="stat-content">
                 <div>
-                  <p className="text-sm text-zinc-500">{stat.title}</p>
-                  <p className="mt-1 text-2xl font-semibold">{stat.value}</p>
+                  <p className="stat-title">{stat.title}</p>
+                  <p className="stat-value">{stat.value}</p>
                 </div>
-                <stat.icon className="h-6 w-6 text-zinc-400" />
+                <stat.icon className="stat-icon" />
               </div>
             </div>
           ))}
         </section>
 
         {/* Recent Orders */}
-        <section className="rounded-xl border border-zinc-200 bg-white shadow-sm">
-          <div className="border-b border-zinc-200 px-6 py-4">
-            <h2 className="text-lg font-semibold">Serviços Recentes</h2>
+        <section className="orders-card">
+          <div className="orders-header">
+            <h2>Serviços Recentes</h2>
           </div>
 
-          <div className="divide-y divide-zinc-200">
+          <div className="orders-list">
             {recentOrders.map((order) => (
-              <div
-                key={order.id}
-                className="flex flex-col gap-2 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
+              <div key={order.id} className="order-row">
                 <div>
-                  <p className="font-medium">
+                  <p className="order-main">
                     {order.car} · {order.service}
                   </p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="order-sub">
                     {order.id} — {order.client}
                   </p>
                 </div>
 
-                <span className="inline-flex w-fit rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-600">
-                  {order.status}
-                </span>
+                <span className="order-status">{order.status}</span>
               </div>
             ))}
           </div>
-        </section>
-        <section>
-          <BrandSlider />
         </section>
       </main>
     </div>

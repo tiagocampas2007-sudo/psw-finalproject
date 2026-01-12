@@ -1,0 +1,99 @@
+.login-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .login-layout {
+    grid-template-columns: 680px 1fr;
+  }
+}
+
+.login-form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.login-subtitle {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.login-fields {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-button {
+  margin-top: 0.5rem;
+  height: 3rem;
+  width: 100%;
+}
+
+.login-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.login-footer a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+.login-image {
+  position: relative;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .login-image {
+    display: block;
+  }
+}
+
+.login-image img {
+  object-fit: cover;
+}
+
+.login-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: oklch(0 0 0 / 20%);
+}

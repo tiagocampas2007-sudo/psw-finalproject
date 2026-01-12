@@ -1,0 +1,113 @@
+.register-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .register-layout {
+    grid-template-columns: 680px 1fr;
+  }
+}
+
+.register-form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.register-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.register-title {
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.register-subtitle {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.register-fields {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.register-fields button {
+  margin-top: 0.5rem;
+  height: 3rem;
+  width: 100%;
+}
+
+.password-validation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.password-validation svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.password-validation.valid {
+  color: oklch(0.65 0.18 145);
+}
+
+.password-validation.invalid {
+  color: oklch(0.62 0.22 29);
+}
+
+.register-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.register-footer a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+.register-image {
+  position: relative;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .register-image {
+    display: block;
+  }
+}
+
+.register-image img {
+  object-fit: cover;
+}
+
+.register-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: oklch(0 0 0 / 20%);
+}
