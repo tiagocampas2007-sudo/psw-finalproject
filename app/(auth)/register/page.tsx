@@ -1,16 +1,27 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 import "@/styles/auth/register.css";
 
+import { registerUser } from "@/lib/api";
+import type { RegisterPayload } from "@/lib/api/auth/auth.types";
+import { useToast } from "@/components/common/ToastContext";
+
 export default function Register() {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const { showToast } = useToast();
 
   const validation = useMemo(() => {
     if (!password && !confirmPassword) {
@@ -40,11 +51,31 @@ export default function Register() {
     };
   }, [password, confirmPassword]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validation.valid) return;
 
-    console.log({ name, email, password });
+    setLoading(true);
+
+    const payload: RegisterPayload = {
+      name,
+      email,
+      password,
+    };
+
+    try {
+      await registerUser(payload);
+      showToast("Conta criada com sucesso!", "success");
+      router.push("/login");
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+          showToast(err.message, "error");
+        } else {
+          showToast("Ocorreu um erro a criar conta.", "error");
+        }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -56,7 +87,6 @@ export default function Register() {
           </div>
 
           <h1 className="register-title">Registe-se na TORQ</h1>
-
           <p className="register-subtitle">Entre na nossa família.</p>
 
           <form onSubmit={handleSubmit} className="register-fields">
@@ -66,6 +96,7 @@ export default function Register() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -76,6 +107,7 @@ export default function Register() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -86,6 +118,7 @@ export default function Register() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -98,6 +131,7 @@ export default function Register() {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -126,8 +160,8 @@ export default function Register() {
               <span>{validation.message}</span>
             </div>
 
-            <button type="submit" disabled={!validation.valid}>
-              Criar conta
+            <button type="submit" disabled={!validation.valid || loading}>
+              {loading ? "A criar conta..." : "Criar conta"}
             </button>
           </form>
 

@@ -52,14 +52,12 @@ export default function Home() {
 
   return (
     <div className="dashboard">
-      {/* Header */}
       <header className="dashboard-header">
         <h1>Dashboard · Oficina Auto</h1>
         <p>Visão geral da atividade diária</p>
       </header>
 
       <main className="dashboard-main">
-        {/* Stats */}
         <section className="stats-grid">
           {stats.map((stat) => (
             <div key={stat.title} className="stat-card">
@@ -74,7 +72,6 @@ export default function Home() {
           ))}
         </section>
 
-        {/* Recent Orders */}
         <section className="orders-card">
           <div className="orders-header">
             <h2>Serviços Recentes</h2>

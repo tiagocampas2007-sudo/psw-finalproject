@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import "@/styles/components/BrandSlider.css";
 
-interface Brand {
-  id: number;
-  name: string;
-  slug: string;
-  image: string;
-}
+import { getBrands } from "@/lib/api";
+import type { Brand } from "@/lib/api/brands/brands.types";
 
 export default function BrandSlider() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -16,11 +13,9 @@ export default function BrandSlider() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function fetchBrands() {
+    async function loadBrands() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/brands`, { cache: "no-store" });
-        if (!res.ok) throw new Error("Erro a carregar marcas");
-        const data: Brand[] = await res.json();
+        const data = await getBrands();
         setBrands(data);
       } catch (err) {
         console.error("Erro ao carregar marcas", err);
@@ -30,12 +25,12 @@ export default function BrandSlider() {
       }
     }
 
-    fetchBrands();
+    loadBrands();
   }, []);
 
   if (loading) {
     return (
-      <div className="h-40 flex items-center justify-center text-sm text-neutral-500">
+      <div className="brand-status">
         A carregar marcas...
       </div>
     );
@@ -43,20 +38,19 @@ export default function BrandSlider() {
 
   if (error || !brands.length) {
     return (
-      <div className="h-40 flex items-center justify-center text-sm text-neutral-500">
+      <div className="brand-status">
         Não foi possível carregar as marcas
       </div>
     );
   }
 
   return (
-    <div className="relative overflow-hidden">
-
-      <div className="flex w-max animate-slider gap-6">
+    <div className="brand-slider">
+      <div className="brand-track">
         {[...brands, ...brands].map((brand, i) => (
           <div
             key={`${brand.slug}-${i}`}
-            className="relative h-30 w-30 shrink-0 overflow-hidden"
+            className="brand-item"
             title={brand.name}
           >
             <Image
@@ -65,7 +59,7 @@ export default function BrandSlider() {
               fill
               unoptimized
               sizes="156px"
-              className="object-contain p-6 grayscale transition-all duration-500 hover:grayscale-0 hover:scale-105"
+              className="brand-image"
             />
           </div>
         ))}
