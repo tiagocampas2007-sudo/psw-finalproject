@@ -2,28 +2,41 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { User2Icon, Building2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 import "@/styles/auth/register.css";
 
-import { registerUser } from "@/lib/api";
-import type { RegisterPayload } from "@/lib/api/auth/auth.types";
-import { useToast } from "@/components/common/ToastContext";
+import { registerUser, registerOffice } from "@/lib/api";
+import { useToast } from "@/contexts/ToastContext";
+
+import UserForm from "@/components/register/UserForm";
+import OfficeForm from "@/components/register/OfficeForm";
+
+type AccountType = "USER" | "OFFICE";
 
 export default function Register() {
   const router = useRouter();
+  const { showToast } = useToast();
 
+  const [accountType, setAccountType] = useState<AccountType>("USER");
+  const [loading, setLoading] = useState(false);
+
+  // user
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  // office
+  const [officeName, setOfficeName] = useState("");
+  const [location, setLocation] = useState("");
+  const [phone, setPhone] = useState<number | "">("");
+  const [openingMinutes, setOpeningMinutes] = useState<number | "">("");
+  const [closingMinutes, setClosingMinutes] = useState<number | "">("");
 
-  const { showToast } = useToast();
-
-  const validation = useMemo(() => {
+  const passwordValidation = useMemo(() => {
     if (!password && !confirmPassword) {
       return {
         valid: false,
@@ -31,7 +44,7 @@ export default function Register() {
       };
     }
 
-    if (password.length < 8) {
+    if (password.trim().length < 8) {
       return {
         valid: false,
         message: "A palavra-passe deve ter pelo menos 8 caracteres.",
@@ -51,28 +64,84 @@ export default function Register() {
     };
   }, [password, confirmPassword]);
 
+  function validateOffice() {
+    if (
+      !officeName.trim() ||
+      !location.trim() ||
+      phone === "" ||
+      openingMinutes === "" ||
+      closingMinutes === ""
+    ) {
+      showToast("Preencha todos os dados da oficina.", "error");
+      return false;
+    }
+
+    if (openingMinutes < 0 || openingMinutes > 1440) {
+      showToast("Hora de abertura inválida.", "error");
+      return false;
+    }
+
+    if (closingMinutes < 0 || closingMinutes > 1440) {
+      showToast("Hora de fecho inválida.", "error");
+      return false;
+    }
+
+    if (closingMinutes <= openingMinutes) {
+      showToast("A hora de fecho deve ser superior à de abertura.", "error");
+      return false;
+    }
+
+    return true;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!validation.valid) return;
+
+    if (!name.trim() || !email.trim()) {
+      showToast("Preencha os dados do utilizador.", "error");
+      return;
+    }
+
+    if (!passwordValidation.valid) {
+      showToast(passwordValidation.message, "error");
+      return;
+    }
+
+    if (accountType === "OFFICE" && !validateOffice()) {
+      return;
+    }
 
     setLoading(true);
 
-    const payload: RegisterPayload = {
-      name,
-      email,
-      password,
-    };
-
     try {
-      await registerUser(payload);
+      if (accountType === "USER") {
+        await registerUser({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+        });
+      } else {
+        await registerOffice({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+
+          officeName: officeName.trim(),
+          location: location.trim(),
+          phone: Number(phone),
+          openingMinutes: Number(openingMinutes),
+          closingMinutes: Number(closingMinutes),
+        });
+      }
+
       showToast("Conta criada com sucesso!", "success");
       router.push("/login");
     } catch (err: unknown) {
-        if (err instanceof Error) {
-          showToast(err.message, "error");
-        } else {
-          showToast("Ocorreu um erro a criar conta.", "error");
-        }
+      if (err instanceof Error) {
+        showToast(err.message, "error");
+      } else {
+        showToast("Erro ao criar conta.", "error");
+      }
     } finally {
       setLoading(false);
     }
@@ -82,102 +151,90 @@ export default function Register() {
     <div className="register-layout">
       <div className="register-form-wrapper">
         <div className="register-form">
-          <div className="register-logo">
-            <Image src="/logo.png" alt="Torq" width={150} height={100} />
+          <h1 className="register-title">Criar conta</h1>
+          <p className="register-subtitle">
+            Escolha o tipo de conta e preencha os dados.
+          </p>
+
+          <div className="register-tabs">
+            <button
+              type="button"
+              className={`register-tab ${accountType === "USER" ? "active" : ""}`}
+              onClick={() => setAccountType("USER")}
+            >
+              <User2Icon size={20} />
+              Cliente
+            </button>
+
+            <button
+              type="button"
+              className={`register-tab ${accountType === "OFFICE" ? "active" : ""}`}
+              onClick={() => setAccountType("OFFICE")}
+            >
+              <Building2Icon size={20} />
+              Oficina
+            </button>
           </div>
 
-          <h1 className="register-title">Registe-se na TORQ</h1>
-          <p className="register-subtitle">Entre na nossa família.</p>
+          <form
+            onSubmit={handleSubmit}
+            className={`register-fields ${
+              accountType === "OFFICE" ? "office-layout" : ""
+            }`}
+          >
+            <UserForm
+              name={name}
+              setName={setName}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              loading={loading}
+            />
 
-          <form onSubmit={handleSubmit} className="register-fields">
-            <div className="field">
-              <label htmlFor="name">Nome</label>
-              <input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={loading}
+            {accountType === "OFFICE" && (
+              <OfficeForm
+                officeName={officeName}
+                setOfficeName={setOfficeName}
+                location={location}
+                setLocation={setLocation}
+                phone={phone}
+                setPhone={setPhone}
+                openingMinutes={openingMinutes}
+                setOpeningMinutes={setOpeningMinutes}
+                closingMinutes={closingMinutes}
+                setClosingMinutes={setClosingMinutes}
+                loading={loading}
               />
-            </div>
-
-            <div className="field">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="field">
-              <label htmlFor="password">Palavra-passe</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="field">
-              <label htmlFor="confirmPassword">
-                Confirmar Palavra-passe
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={loading}
-              />
-            </div>
+            )}
 
             <div
-              className={`password-validation ${
-                validation.valid ? "valid" : "invalid"
+              className={`password-validation field-full ${
+                passwordValidation.valid ? "valid" : "invalid"
               }`}
             >
-              {validation.valid ? (
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-              <span>{validation.message}</span>
+              {passwordValidation.message}
             </div>
 
-            <button type="submit" disabled={!validation.valid || loading}>
+            <button
+              type="submit"
+              className="field-full"
+              disabled={!passwordValidation.valid || loading}
+            >
               {loading ? "A criar conta..." : "Criar conta"}
             </button>
           </form>
 
           <p className="register-footer">
-            Já tem conta? <Link href="/login">Faça login</Link>
+            Já tem conta? <Link href="/login">Entrar</Link>
           </p>
         </div>
       </div>
 
       <div className="register-image">
-        <Image
-          src="/login/background.jpg"
-          alt="Register background"
-          fill
-          priority
-        />
+        <Image src="/login/background.jpg" alt="Register background" fill priority />
         <div className="register-image-overlay" />
       </div>
     </div>

@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/common/ToastContext";
+import { useToast } from "@/contexts/ToastContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { loginUser } from "@/lib/api";
 
 import "@/styles/auth/login.css";
@@ -16,6 +17,7 @@ export default function Login() {
 
   const router = useRouter();
   const { showToast } = useToast();
+  const { refresh } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +31,7 @@ export default function Login() {
 
     try {
       await loginUser({ email, password });
-
+      await refresh();
       showToast("Login efetuado com sucesso.", "success");
       router.push("/");
     } catch (err: unknown) {

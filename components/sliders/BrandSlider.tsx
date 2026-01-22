@@ -46,6 +46,8 @@ export default function BrandSlider() {
 
   return (
     <div className="brand-slider">
+      <h1 className="brand-title">As marcas com que trabalhamos</h1>
+      <p className="">Conheça todas as marcas que a nossa plataforma apoia e disponibiliza serviço.</p>
       <div className="brand-track">
         {[...brands, ...brands].map((brand, i) => (
           <div

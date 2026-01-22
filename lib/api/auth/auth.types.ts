@@ -25,3 +25,20 @@ export interface LoginResponse {
   token: string;
   user: AuthUser;
 }
+
+export interface RegisterOfficePayload {
+  name: string;
+  email: string;
+  password: string;
+
+  officeName: string;
+  location: string;
+  phone: number;
+  openingMinutes: number;
+  closingMinutes: number;
+}
+
+export interface RegisterOfficeResponse {
+  message: string;
+  user: AuthUser;
+}

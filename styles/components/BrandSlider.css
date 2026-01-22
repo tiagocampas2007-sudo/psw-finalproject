@@ -1,6 +1,13 @@
 .brand-slider {
   position: relative;
   overflow: hidden;
+  max-width: 1480px;
+  margin: auto;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 2rem;
 }
 
 .brand-status {
@@ -13,6 +20,7 @@
 }
 
 .brand-track {
+  margin-top: 2rem;
   display: flex;
   gap: 24px;
   width: max-content;
