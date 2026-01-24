@@ -1,0 +1,138 @@
+.profile-page {
+  padding: 2rem;
+}
+
+.profile-header {
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+}
+
+.profile-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.profile-header p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.profile-content {
+  max-width: 800px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-card {
+  padding: 1.5rem;
+}
+
+.profile-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.profile-card-description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 1rem;
+}
+
+.profile-card-description.success {
+  color: oklch(0.55 0.18 145);
+}
+
+.profile-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-form label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.profile-form input {
+  width: 100%;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.profile-mechanic-card {
+  border: 1px dashed var(--border);
+  background-color: var(--card);
+}
+
+.profile-mechanic-btn {
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.mechanic-services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.mechanic-service-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+
+  padding: 0.75rem 1rem;
+
+  border: 1px solid var(--border);
+  background-color: var(--background);
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+
+  white-space: nowrap;
+
+  flex: 1 1 fit-content;
+  min-width: max-content;
+
+  cursor: pointer;
+}
+
+.mechanic-service-item:hover {
+  background-color: var(--card);
+  border-color: var(--foreground);
+}
+
+.mechanic-service-item.active {
+  background-color: oklch(0% 0 0);
+  border-color: oklch(0% 0 0);
+  color: oklch(100% 0.00011 271.152);
+}
+
+.mechanic-service-item.active svg {
+  opacity: 1;
+}
+
+.profile-mechanic-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .profile-page {
+    padding: 1.25rem;
+  }
+
+  .mechanic-services-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

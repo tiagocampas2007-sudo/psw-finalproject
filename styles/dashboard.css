@@ -49,7 +49,6 @@
 .stat-card {
   background-color: var(--card);
   border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 4px);
   padding: 1.25rem;
   box-shadow: 0 1px 4px oklch(0 0 0 / 4%);
 }
@@ -77,10 +76,13 @@
   color: var(--muted-foreground);
 }
 
+.brands-section {
+  margin-top: 1rem;
+}
+
 .orders-card {
   background-color: var(--card);
   border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 4px);
   box-shadow: 0 1px 4px oklch(0 0 0 / 4%);
   overflow: hidden;
 }
@@ -90,55 +92,81 @@
   border-bottom: 1px solid var(--border);
 }
 
+.orders-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .orders-header h2 {
   font-size: 1.125rem;
   font-weight: 600;
 }
 
-.orders-list {
+.services-table {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.order-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 1.5rem;
+.services-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
 }
 
-@media (min-width: 640px) {
-  .order-row {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.order-row + .order-row {
+.services-row:not(.services-head) + .services-row {
   border-top: 1px solid var(--border);
 }
 
-.order-main {
+.services-row:not(.services-head):hover {
+  background-color: oklch(0 0 0 / 2%);
+}
+
+.services-head {
+  background-color: var(--muted);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
-.order-sub {
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
+.status-badge.active {
+  background-color: oklch(0.92 0.05 150);
+  color: oklch(0.4 0.1 150);
 }
 
-.order-status {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
+.status-badge.inactive {
   background-color: var(--muted);
   color: var(--muted-foreground);
-  width: fit-content;
 }
 
-.brands-section {
-  margin-top: 1rem;
+.row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .services-head {
+    display: none;
+  }
+
+  .services-row {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.5rem;
+  }
 }

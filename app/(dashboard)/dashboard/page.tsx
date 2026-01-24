@@ -1,6 +1,10 @@
+"use client";
+
 import { Wrench, Car, Euro, ClipboardList } from "lucide-react";
 
 import "@/styles/dashboard.css";
+import ServicesTable from "@/components/dashboard/ServicesTable";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Home() {
   const stats = [
@@ -26,34 +30,12 @@ export default function Home() {
     },
   ];
 
-  const recentOrders = [
-    {
-      id: "#OF-1023",
-      client: "João Silva",
-      car: "VW Golf 4 1.9 TDI",
-      service: "Revisão Geral",
-      status: "Em progresso",
-    },
-    {
-      id: "#OF-1022",
-      client: "Maria Costa",
-      car: "BMW Série 1",
-      service: "Troca de Travões",
-      status: "Concluído",
-    },
-    {
-      id: "#OF-1021",
-      client: "Pedro Rocha",
-      car: "Audi A3",
-      service: "Diagnóstico",
-      status: "Aguarda peças",
-    },
-  ];
+  const { user } = useAuth();
 
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Dashboard · Oficina Auto</h1>
+        <h1>Dashboard · {user?.office?.name}</h1>
         <p>Visão geral da atividade diária</p>
       </header>
 
@@ -71,29 +53,8 @@ export default function Home() {
             </div>
           ))}
         </section>
-
-        <section className="orders-card">
-          <div className="orders-header">
-            <h2>Serviços Recentes</h2>
-          </div>
-
-          <div className="orders-list">
-            {recentOrders.map((order) => (
-              <div key={order.id} className="order-row">
-                <div>
-                  <p className="order-main">
-                    {order.car} · {order.service}
-                  </p>
-                  <p className="order-sub">
-                    {order.id} — {order.client}
-                  </p>
-                </div>
-
-                <span className="order-status">{order.status}</span>
-              </div>
-            ))}
-          </div>
-        </section>
+        
+        <ServicesTable />
       </main>
     </div>
   );

@@ -62,14 +62,6 @@
   position: relative;
 }
 
-.navbar-user {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  text-align: right;
-  cursor: pointer;
-}
-
 .navbar-auth {
   display: flex;
   gap: 10px;
@@ -94,6 +86,70 @@
 
 .logout-button:hover {
   background: none;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: right;
+  color: black;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  align-items: flex-end;
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 160px;
+  background-color: var(--card);
+  box-shadow: 0 10px 30px oklch(0 0 0 / 12%);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.775rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--foreground);
+}
+
+.dropdown-item:hover {
+  background-color: var(--muted);
+}
+
+.dropdown-item.danger {
+  color: var(--destructive);
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,77 @@
+.mechanics-page {
+  padding: 2rem;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.mechanics-header {
+  max-width: 1780px;
+  margin: 0 auto 2rem auto;
+}
+
+.mechanics-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.mechanics-header p {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+}
+
+.mechanics-card {
+  max-width: 1780px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.mechanics-table {
+  width: 100%;
+}
+
+.mechanics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 4fr .5fr;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.mechanics-row:last-child {
+  border-bottom: none;
+}
+
+.mechanics-head {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+  background-color: var(--card);
+}
+
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primary-btn.small {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .mechanics-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .mechanics-head {
+    display: none;
+  }
+
+  .row-actions {
+    justify-content: flex-start;
+  }
+}

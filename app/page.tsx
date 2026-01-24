@@ -5,12 +5,13 @@ import Image from "next/image";
 import { Calendar, UsersRound, Clock, Settings } from "lucide-react";
 import "@/styles/home.css";
 import BrandSlider from "@/components/sliders/BrandSlider";
+import HireNotification from "@/components/common/HireNotification";
 
 export default function HomePage() {
   return (
     <>
       <Navbar/>
-
+      <HireNotification />
       <main>
         <section className="section-p hero-content">
           <div>

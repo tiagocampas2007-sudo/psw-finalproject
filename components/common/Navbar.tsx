@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, ChevronDown, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import "@/styles/layout/navbar.css";
@@ -16,11 +17,11 @@ const NAV_ITEMS_BY_ROLE: Record<string, NavbarItem[]> = {
     { label: "A minha garagem", href: "/garage" },
     { label: "Marcações", href: "/appointments" },
   ],
-  ADMIN_OFFICE: [
+  ADMIN: [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "Ordens", href: "/orders" },
     { label: "Agenda", href: "/calendar" },
     { label: "Serviços", href: "/services" },
+    { label: "Procurar mecânicos", href: "/mechanics" },
   ],
   STAFF: [
     { label: "Agenda", href: "/calendar" },
@@ -30,26 +31,20 @@ const NAV_ITEMS_BY_ROLE: Record<string, NavbarItem[]> = {
 
 const ROLE_LABELS: Record<string, string> = {
   CLIENT: "Cliente",
-  STAFF: "Staff",
-  ADMIN_OFFICE: "Administrador",
+  STAFF: "Mecânico",
+  ADMIN: "Administrador",
 };
 
-function getRoleLabel(
-  role: string,
-  office?: { name: string } | null
-) {
+function getRoleLabel(role: string, office?: { name: string } | null) {
   const base = ROLE_LABELS[role] ?? role;
-
-  if (office?.name) {
-    return `${base} - ${office.name}`;
-  }
-
-  return base;
+  return office?.name ? `${base} · ${office.name}` : base;
 }
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+
+  const [open, setOpen] = useState(false);
 
   async function handleLogout() {
     await logout();
@@ -59,7 +54,9 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-left">
-        <h1 className="navbar-workshop">TORQ</h1>
+        <h1 className="navbar-workshop">
+          <Link href="/">TORQ</Link>
+        </h1>
       </div>
 
       <nav className="navbar-center">
@@ -74,15 +71,46 @@ export default function Navbar() {
 
       <div className="navbar-right">
         {!loading && user ? (
-          <>
-            <div className="navbar-user">
-              <span className="user-name">{user.name}</span>
-              <span className="user-role">{getRoleLabel(user.role, user.office)}</span>
-            </div>
-            <button className="logout-button" onClick={handleLogout}>
-              <LogOut className="icon" />
+          <div className="user-dropdown">
+            <button
+              type="button"
+              className="navbar-user"
+              onClick={() => setOpen((v) => !v)}
+            >
+              <div className="user-info">
+                <span className="user-name">{user.name}</span>
+                <span className="user-role">
+                  {getRoleLabel(user.role, user.office)}
+                </span>
+              </div>
+
+              <ChevronDown
+                size={16}
+                className={`dropdown-arrow ${open ? "open" : ""}`}
+              />
             </button>
-          </>
+
+            {open && (
+              <div className="dropdown-menu">
+                <Link
+                  href="/profile"
+                  className="dropdown-item"
+                  onClick={() => setOpen(false)}
+                >
+                  <User size={16} />
+                  Ver perfil
+                </Link>
+
+                <button
+                  className="dropdown-item danger"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={16} />
+                  Terminar sessão
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           !loading && (
             <div className="navbar-auth">

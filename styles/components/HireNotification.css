@@ -1,0 +1,100 @@
+.hire-notification-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  background: oklch(0 0 0 / 35%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.hire-notification-card {
+  width: 100%;
+  max-width: 520px;
+
+  background-color: var(--card);
+  border: 1px solid var(--border);
+
+  padding: 2rem 2rem 2.25rem;
+  text-align: center;
+
+  box-shadow: 0 20px 60px oklch(0 0 0 / 25%);
+  animation: hire-pop 0.35s ease;
+}
+
+.hire-notification-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.hire-notification-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.hire-notification-text {
+  font-size: 0.95rem;
+  color: var(--foreground);
+  margin-bottom: 1.25rem;
+}
+
+.hire-notification-features {
+  background: var(--background);
+  border: 1px dashed var(--border);
+
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.hire-notification-features p {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.hire-notification-features ul {
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.hire-notification-features li {
+  margin-bottom: 0.35rem;
+}
+
+.hire-notification-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.75rem 1.5rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  background-color: var(--foreground);
+  color: var(--background);
+
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.hire-notification-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+@keyframes hire-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
