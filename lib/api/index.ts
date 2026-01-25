@@ -21,3 +21,9 @@ export * from "./serviceTypes/serviceTypes.types";
 
 export * from "./mechanics/mechanic.api";
 export * from "./mechanics/mechanic.types";
+
+export * from "./offices/office.api";
+export * from "./offices/office.types";
+
+export * from "./appointments/appointment.api";
+export * from "./appointments/appointment.types";

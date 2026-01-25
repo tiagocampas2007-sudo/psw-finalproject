@@ -18,6 +18,7 @@ const EMPTY_FORM: ServicePayload = {
   durationMinutes: 30,
   price: 0,
   description: "",
+  minAdvanceDays: 1,
   serviceTypeId: "",
 };
 
@@ -39,6 +40,7 @@ export default function ServicePage() {
   form.name.trim().length > 0 &&
   form.durationMinutes >= 1 &&
   form.price >= 0 &&
+  form.minAdvanceDays >= 1 &&
   form.serviceTypeId.trim().length > 0;
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function ServicePage() {
             durationMinutes: service.durationMinutes,
             price: service.price,
             description: service.description,
+            minAdvanceDays: service.minAdvanceDays,
             serviceTypeId: service.serviceTypeId._id,
           });
         }
@@ -177,6 +180,19 @@ return (
                   ))}
                 </select>
               </div>
+            </div>
+
+            <div className="advance-days">
+              <label>Dias de avanço de marcação</label>
+              <input
+                type="number"
+                min={1}
+                max={30}
+                value={form.minAdvanceDays}
+                onChange={(e) =>
+                  setForm({ ...form, minAdvanceDays: Number(e.target.value) })
+                }
+              />
             </div>
 
             <div>

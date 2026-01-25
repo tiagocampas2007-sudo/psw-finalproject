@@ -111,7 +111,7 @@
 
 .services-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1.5rem;

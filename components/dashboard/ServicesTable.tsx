@@ -88,6 +88,7 @@ export default function ServicesTable() {
             <span>Nome</span>
             <span>Tipo</span>
             <span>Duração</span>
+            <span>Avanço de marcação</span>
             <span>Preço</span>
             <span></span>
           </div>
@@ -111,6 +112,8 @@ export default function ServicesTable() {
               <span>{service.serviceTypeId?.label ?? "-"}</span>
 
               <span>{service.durationMinutes} min</span>
+
+              <span>{service.minAdvanceDays} {service.minAdvanceDays === 1 ? "dia" : "dias"}</span>
 
               <span>{service.price} €</span>
 

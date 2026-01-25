@@ -32,6 +32,10 @@
   margin: 0;
 }
 
+.vehicle-brand img {
+  object-fit: contain;
+}
+
 .vehicle-card {
   position: relative;
   border: 1px solid var(--border);

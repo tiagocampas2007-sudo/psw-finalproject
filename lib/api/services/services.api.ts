@@ -13,6 +13,12 @@ export function getServicesByOfficeId(): Promise<Service[]> {
   return apiFetch<Service[]>("/api/services/office");
 }
 
+export function getServicesByOffice(
+  officeId: string
+): Promise<Service[]> {
+  return apiFetch<Service[]>(`/api/services?officeId=${officeId}`);
+}
+
 export function getServiceById(id: string): Promise<Service> {
   return apiFetch<Service>(`/api/services/${id}`);
 }

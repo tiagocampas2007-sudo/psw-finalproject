@@ -4,6 +4,7 @@ export interface Service {
   _id: string;
   name: string;
   durationMinutes: number;
+  minAdvanceDays: number;
   price: number;
   description: string;
   serviceTypeId: ServiceType;
@@ -14,6 +15,7 @@ export interface ServicePage {
   name: string;
   description: string;
   durationMinutes: number;
+  minAdvanceDays: number;
   price: number;
   serviceTypeId: {
     _id: string;
@@ -26,10 +28,10 @@ export interface ServicePage {
   };
 }
 
-
 export interface ServicePayload {
   name: string;
   durationMinutes: number;
+  minAdvanceDays: number;
   price: number;
   description: string;
   serviceTypeId: string;
