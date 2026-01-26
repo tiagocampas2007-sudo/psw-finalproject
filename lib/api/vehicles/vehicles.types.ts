@@ -23,3 +23,24 @@ export interface CreateVehiclePayload {
   brandId: number;
   modelId: number;
 }
+
+export interface VehicleAppointment {
+  _id: string;
+  date: string;
+  startMinutes: number;
+  endMinutes: number;
+  notes?: string;
+
+  serviceId: {
+    name: string;
+    durationMinutes: number;
+  };
+
+  officeId: {
+    name: string;
+  };
+
+  statusId: {
+    label: "PENDING" | "COMPLETED" | "CANCELLED";
+  };
+}

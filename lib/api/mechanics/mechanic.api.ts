@@ -14,6 +14,16 @@ export function getAvailableMechanics(): Promise<Mechanic[]> {
   return apiFetch("/api/mechanics/available");
 }
 
+export function getMechanicsByOffice(): Promise<Mechanic[]> {
+  return apiFetch("/api/mechanics/by-office");
+}
+
+export function deleteMechanic(id: string): Promise<{ success: boolean }> {
+  return apiFetch(`/api/mechanics/${id}`, {
+    method: "DELETE",
+  });
+}
+
 export function hireMechanic(id: string): Promise<{ message: string }> {
   return apiFetch(`/api/mechanics/${id}/hire`, {
     method: "POST",

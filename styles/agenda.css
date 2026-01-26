@@ -1,0 +1,59 @@
+.agenda-page {
+  padding: 1.5rem 2rem;
+}
+
+.agenda-header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.agenda-header p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.agenda-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.agenda-day h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-transform: capitalize;
+}
+
+.agenda-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.agenda-item {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+}
+
+.agenda-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.vehicle-link {
+  margin-left: auto;
+  font-size: 0.75rem;
+  text-decoration: underline;
+}
+
+.agenda-notes {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}

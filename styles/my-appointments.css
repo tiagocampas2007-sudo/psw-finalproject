@@ -1,0 +1,77 @@
+.my-appointments {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.my-appointments h1 {
+  margin-bottom: 24px;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.appointment-card {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.appointment-main h3 {
+    margin: 0;
+}
+
+.appointment-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  color: rgb(122, 122, 122);
+}
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 12px 10px;
+  text-transform: uppercase;
+}
+
+.status.pending {
+  background: oklch(0% 0 0);
+  color: oklch(100% 0.00011 271.152);
+}
+
+.status.confirmed {
+  background: oklch(59.306% 0.19065 144.288);
+  color: oklch(100% 0.00011 271.152);
+}
+
+.status.cancelled {
+  background: oklch(46.079% 0.17851 28.018);
+  color: oklch(100% 0.00011 271.152);
+}
+
+.cancel-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgb(206, 0, 0);
+  border: none;
+  color:white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.cancel-btn:hover {
+  text-decoration: underline;
+}
+
+.muted {
+  color: var(--muted);
+}

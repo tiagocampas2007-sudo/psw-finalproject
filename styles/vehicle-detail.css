@@ -1,0 +1,97 @@
+.vehicle-detail {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.vehicle-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px oklch(0 0 0 / 4%);
+}
+
+.vehicle-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vehicle-header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.plate {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.vehicle-meta {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.history h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.history-card + .history-card {
+  margin-top: 0.75rem;
+}
+
+.history-main strong {
+  font-weight: 600;
+}
+
+.history-meta {
+  margin-top: 0.25rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.notes {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.completed {
+  color: oklch(0.4 0.1 150);
+}
+
+.status.pending {
+  color: oklch(0.6 0.1 80);
+}
+
+.status.cancelled {
+  color: oklch(0.55 0.05 30);
+}

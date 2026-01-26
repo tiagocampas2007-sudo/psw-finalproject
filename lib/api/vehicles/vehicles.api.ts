@@ -1,5 +1,5 @@
 import { apiFetch } from "../client";
-import type { Vehicle, CreateVehiclePayload } from "./vehicles.types";
+import type { Vehicle, CreateVehiclePayload, VehicleAppointment } from "./vehicles.types";
 
 export function getMyVehicles(): Promise<Vehicle[]> {
   return apiFetch<Vehicle[]>("/api/vehicles");
@@ -18,4 +18,14 @@ export function deleteVehicle(id: string): Promise<{ message: string }> {
   return apiFetch(`/api/vehicles/${id}`, {
     method: "DELETE",
   });
+}
+
+export function getVehicleById(id: string): Promise<Vehicle> {
+  return apiFetch(`/api/vehicles/${id}`);
+}
+
+export function getVehicleHistory(
+  id: string
+): Promise<VehicleAppointment[]> {
+  return apiFetch(`/api/vehicles/${id}/history`);
 }

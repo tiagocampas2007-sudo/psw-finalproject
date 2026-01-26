@@ -36,7 +36,7 @@
 }
 
 .confirm-confirm {
-  background: var(--destructive);
+  background: black;
   color: white;
   height: 2.5rem;
   padding: 0 1.25rem;

@@ -41,3 +41,33 @@ export interface AvailabilitySlot {
   available: boolean;
   availableMechanics: number;
 }
+
+export interface AppointmentPage {
+  _id: string;
+  date: string;
+  startMinutes: number;
+
+  mechanicId: {
+    _id: string;
+    user: {
+      name: string;
+    };
+  };
+
+  vehicleId: string;
+
+  officeId: {
+    name: string;
+    location: string;
+  };
+
+  serviceId: {
+    name: string;
+    durationMinutes: number;
+  };
+
+  statusId: {
+    label: "PENDING" | "CONFIRMED" | "CANCELLED";
+  };
+}
+

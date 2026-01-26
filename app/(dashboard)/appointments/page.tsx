@@ -22,12 +22,14 @@ import {
 import type { Vehicle, Office, Service, AvailabilitySlot } from "@/lib/api";
 import { getServiceTypeIcon } from "@/lib/serviceTypeIcons";
 import { useToast } from "@/contexts/ToastContext";
+import Router from "next/router";
 
 import "@/styles/appointments.css";
 
 export default function AppointmentsPage() {
   const [step, setStep] = useState(0);
   const { showToast } = useToast();
+  const router = Router;
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
@@ -214,15 +216,8 @@ export default function AppointmentsPage() {
       });
 
       showToast("Marcação criada com sucesso!", "success");
-
-      setStep(0);
-      setSelectedVehicle(null);
-      setSelectedOffice(null);
-      setSelectedService(null);
-      setSelectedDate(null);
-      setSelectedShift(null);
-      setDescription("");
-      setShifts([]);
+      router.push("/my-appointments");
+      
     } catch (err: unknown) {
       if(err instanceof Error && err.message) {
         showToast(err.message, "error");
@@ -558,6 +553,15 @@ export default function AppointmentsPage() {
             <h2>Confirmar marcação</h2>
 
             <div className="summary">
+              <div className="summary-row">
+                <div className="summary-label">
+                  <Car size={18} />
+                  <span>Veículo</span>
+                </div>
+                <strong>{selectedVehicle?.brand} {selectedVehicle?.model}</strong>
+              </div>
+
+
               <div className="summary-row">
                 <div className="summary-label">
                   <MapPin size={18} />

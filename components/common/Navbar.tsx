@@ -13,19 +13,23 @@ export interface NavbarItem {
 }
 
 const NAV_ITEMS_BY_ROLE: Record<string, NavbarItem[]> = {
-  CLIENT: [
-    { label: "A minha garagem", href: "/garage" },
+  CLIENT: [    
+    { label: "Procurar serviços", href: "/services" },
     { label: "Marcações", href: "/appointments" },
+    { label: "As minhas marcações", href: "/my-appointments" },
+    { label: "A minha garagem", href: "/garage" },
   ],
   ADMIN: [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "Agenda", href: "/calendar" },
     { label: "Serviços", href: "/services" },
     { label: "Procurar mecânicos", href: "/mechanics" },
   ],
   STAFF: [
-    { label: "Agenda", href: "/calendar" },
-    { label: "Ordens", href: "/orders" },
+    { label: "Agenda", href: "/agenda" },
+    { label: "Serviços", href: "/services" },
+    { label: "Marcações", href: "/appointments" },
+    { label: "As minhas marcações", href: "/my-appointments" },
+    { label: "A minha garagem", href: "/garage" },
   ],
 };
 

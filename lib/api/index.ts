@@ -27,3 +27,6 @@ export * from "./offices/office.types";
 
 export * from "./appointments/appointment.api";
 export * from "./appointments/appointment.types";
+
+export * from "./agenda/agenda.api";
+export * from "./agenda/agenda.types";

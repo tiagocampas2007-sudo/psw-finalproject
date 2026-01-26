@@ -3,6 +3,7 @@ import type {
   CreateAppointmentPayload,
   CreateAppointmentResponse,
   AvailabilitySlot,
+  AppointmentPage,
 } from "./appointment.types";
 
 export function createAppointment(
@@ -24,5 +25,25 @@ export function getAvailability(payload: {
       body: JSON.stringify(payload),
     }
   );
+}
+
+export function getMyAppointments(): Promise<AppointmentPage[]> {
+  return apiFetch<AppointmentPage[]>("/api/appointments/my-appointments");
+}
+
+export function getAppointmentsByOffice(): Promise<AppointmentPage[]> {
+  return apiFetch<AppointmentPage[]>("/api/appointments/office-appointments");
+}
+
+export function cancelAppointment(id: string): Promise<void> {
+  return apiFetch<void>(`/api/appointments/${id}/cancel`, {
+    method: "PATCH",
+  });
+}
+
+export function completeAppointment(id: string): Promise<void> {
+  return apiFetch<void>(`/api/appointments/${id}/complete`, {
+    method: "PATCH",
+  });
 }
 
