@@ -3,6 +3,7 @@
 import Navbar from "@/components/common/Navbar";
 import Image from "next/image";
 import { Calendar, UsersRound, Clock, Settings } from "lucide-react";
+import Link from "next/link";
 import "@/styles/home.css";
 import BrandSlider from "@/components/sliders/BrandSlider";
 import HireNotification from "@/components/common/HireNotification";
@@ -28,11 +29,14 @@ export default function HomePage() {
             </p>
 
             <div className="actions">
-              <button>
-                Agendar Serviço
-                <span>→</span>
-              </button>
-              <a href="#">Ver Oficinas</a>
+              <Link href="/appointments">
+                <button>
+                  Agendar Serviço
+                  <span>→</span>
+                </button>
+              </Link>
+
+              <a href="/services">Ver serviços</a>
             </div>
           </div>
 
@@ -196,14 +200,18 @@ export default function HomePage() {
           </p>
 
           <div className="cta-actions">
-            <button className="cta-primary">
-              Agendar Serviço
-              <span>→</span>
-            </button>
+            <Link href="/appointments">
+              <button className="cta-primary">
+                Agendar Serviço
+                <span>→</span>
+              </button>
+            </Link>
 
-            <button className="cta-secondary">
-              Explorar Oficinas
-            </button>
+            <Link href="/services">
+              <button className="cta-secondary">
+                Explorar Oficinas
+              </button>
+            </Link>
           </div>
         </div>
 

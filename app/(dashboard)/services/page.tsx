@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { Clock, Euro, ArrowRight, Search } from "lucide-react";
+import { useToast } from "@/contexts/ToastContext";
 import Link from "next/link";
 
 import { getServices } from "@/lib/api";
@@ -22,18 +23,24 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
+  const { showToast } = useToast();
+
   useEffect(() => {
     async function load() {
       try {
         const data = await getServices();
         setServices(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          showToast(err.message, "error");
+        }
       } finally {
         setLoading(false);
       }
     }
 
     load();
-  }, []);
+  }, [showToast]);
 
   const filteredServices = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -123,7 +130,7 @@ export default function Services() {
                 </div>
 
                 <Link
-                    href={`/marcacoes?service=${service._id}`}
+                    href="/appointments"
                     className="service-action"
                 >
                     Agendar

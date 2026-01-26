@@ -22,14 +22,12 @@ import {
 import type { Vehicle, Office, Service, AvailabilitySlot } from "@/lib/api";
 import { getServiceTypeIcon } from "@/lib/serviceTypeIcons";
 import { useToast } from "@/contexts/ToastContext";
-import Router from "next/router";
 
 import "@/styles/appointments.css";
 
 export default function AppointmentsPage() {
   const [step, setStep] = useState(0);
   const { showToast } = useToast();
-  const router = Router;
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
@@ -39,7 +37,6 @@ export default function AppointmentsPage() {
 
   const [services, setServices] = useState<Service[]>([]);
   const [servicesLoading, setServicesLoading] = useState(false);
-
 
   const [shifts, setShifts] = useState<AvailabilitySlot[]>([]);
   const [shiftsLoading, setShiftsLoading] = useState(false);
@@ -216,7 +213,7 @@ export default function AppointmentsPage() {
       });
 
       showToast("Marcação criada com sucesso!", "success");
-      router.push("/my-appointments");
+      window.location.href = "/my-appointments";
       
     } catch (err: unknown) {
       if(err instanceof Error && err.message) {
