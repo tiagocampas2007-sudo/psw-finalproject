@@ -8,6 +8,7 @@ import type {
   RegisterOfficeResponse,
 } from "./auth.types";
 
+// Registar cliente
 export function registerUser(
   payload: RegisterPayload
 ): Promise<RegisterResponse> {
@@ -17,6 +18,7 @@ export function registerUser(
   });
 }
 
+// Registar oficina
 export function registerOffice(
   payload: RegisterOfficePayload
 ): Promise<RegisterOfficeResponse> {
@@ -26,6 +28,7 @@ export function registerOffice(
   });
 }
 
+// Login
 export function loginUser(
   payload: LoginPayload
 ): Promise<LoginResponse> {

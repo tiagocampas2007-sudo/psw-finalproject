@@ -1,3 +1,5 @@
+//junção de todos os exports de api e types
+
 export * from "./auth/auth.api";
 export * from "./auth/auth.types";
 
