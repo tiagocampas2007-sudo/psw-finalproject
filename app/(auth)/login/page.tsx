@@ -102,15 +102,18 @@ export default function Login() {
         </div>
       </div>
 
-      <div className="login-image">
-        <Image
-          src="/login/background.jpg"
-          alt="Login background"
-          fill
-          priority
-        />
-        <div className="login-image-overlay" />
-      </div>
+   <div className="login-image">
+  <Image
+    src="/login/background.jpg"
+    alt="Login background"
+    fill
+    priority
+    loading="eager"
+    sizes="100vw"
+  />
+  <div className="login-image-overlay" />
+</div>
+
     </div>
   );
 }
