@@ -135,16 +135,18 @@ export default function MyAppointmentsPage() {
                 </div>
               </div>
 
-              <div className={`status ${a.statusId.label.toLowerCase()}`}>
-                {APPOINTMENT_STATUS_LABELS[a.statusId.label] ??
-                  a.statusId.label}
-              </div>
+            <div className={`status ${(a.statusId?.label || a.status || 'pending').toLowerCase()}`}>
+  {APPOINTMENT_STATUS_LABELS[a.statusId?.label || a.status] ?? 
+   (a.statusId?.label || a.status || 'Pendente')}
+</div>
 
-              {a.statusId.label === "PENDING" && (
-                <button
-                  className="cancel-btn"
-                  onClick={() => askCancelAppointment(a._id)}
-                >
+
+              {(a.statusId?.label || a.status) === "PENDING" && (
+  <button
+    className="cancel-btn"
+    onClick={() => askCancelAppointment(a._id)}
+  >
+
                   <XCircle size={16} />
                   Cancelar
                 </button>

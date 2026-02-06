@@ -101,13 +101,36 @@ export default function AppointmentsPage() {
     };
   }, [selectedOffice, showToast]);
 
+const [brands, setBrands] = useState([]);
+const [models, setModels] = useState([]);
+
+useEffect(() => {
+  // Fetch BRANDS
+  fetch('http://localhost:4000/api/brands')
+    .then(r => r.json())
+    .then(setBrands)
+    .catch(err => console.error("Brands error:", err));
+
+  // Fetch MODELS  
+  fetch('http://localhost:4000/api/models')
+    .then(r => r.json())
+    .then(data => {
+      console.log("🚗 20 MODELS:", data.length);
+      setModels(data);
+    })
+    .catch(err => console.error("Models error:", err));
+}, []);
+
+
   useEffect(() => {
     if (step !== 3) return;
     if (!selectedOffice || !selectedService || !selectedDate) return;
 
-    const officeId = selectedOffice.id;
-    const serviceId = selectedService._id;
-    const date = selectedDate.toISOString().slice(0, 10);
+  const officeId = Number(selectedOffice.id); 
+const serviceId = selectedService._id;      
+const date = selectedDate.toISOString().slice(0, 10);
+
+
 
     let cancelled = false;
 

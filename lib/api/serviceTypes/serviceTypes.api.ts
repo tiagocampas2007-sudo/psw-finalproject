@@ -1,6 +1,10 @@
 import { apiFetch } from "../client";
-import type { ServiceType } from "./serviceTypes.types";
+export interface ServiceType {
+  _id: string;
+  label: string;
+  slug: string;
+}
 
 export function getServiceTypes(): Promise<ServiceType[]> {
-  return apiFetch<ServiceType[]>("/api/service-types");
+  return apiFetch<ServiceType[]>("/api/services");
 }

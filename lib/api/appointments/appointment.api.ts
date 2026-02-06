@@ -17,17 +17,19 @@ export function createAppointment(
 }
 
 // Obter disponibilidade de marcações
+// Obter disponibilidade de marcações
 export function getAvailability(payload: {
-  officeId: string;
-  serviceId: string;
+  officeId: number;
+  serviceId: string;  // _id Mongo
   date: string;
 }): Promise<AvailabilitySlot[]> {
-  return apiFetch<AvailabilitySlot[]>("/api/appointments/availability", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }
-  );
+  return apiFetch<{ availableSlots: AvailabilitySlot[] }>("/api/appointments/availability", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }).then(res => res.availableSlots ?? []);
 }
+
+
 
 // Obter marcações do utilizador autenticado
 export function getMyAppointments(): Promise<AppointmentPage[]> {
