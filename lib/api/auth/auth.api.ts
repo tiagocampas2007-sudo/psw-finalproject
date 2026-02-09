@@ -18,22 +18,41 @@ export function registerUser(
   });
 }
 
-// Registar oficina
+// Registar oficina (cria ADMIN)
 export function registerOffice(
   payload: RegisterOfficePayload
 ): Promise<RegisterOfficeResponse> {
-  return apiFetch<RegisterOfficeResponse>("/api/auth/register-office", {
+  return apiFetch<RegisterOfficeResponse>("/api/offices/", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
-// Login
+// 🔥 LOGIN CORRIGIDO COM ROLE
 export function loginUser(
   payload: LoginPayload
-): Promise<LoginResponse> {
-  return apiFetch<LoginResponse>("/api/auth/login", {
+): Promise<LoginResponse & { role: string }> {
+  console.log('🔐 Iniciando login:', payload.email);
+  
+  return apiFetch("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
+  }).then((response: any) => {
+    console.log('🔑 Resposta login:', response);
+    
+    // Salva token
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+      console.log('✅ TOKEN SALVO');
+    }
+    
+    // 🔥 EXTRAI ROLE do user
+    const role = response.user?.role || "CLIENT";
+    console.log('🔑 ROLE detectado:', role);
+    
+    return {
+      ...response,
+      role: role  // ← RETORNA ROLE para frontend!
+    } as LoginResponse & { role: string };
   });
 }

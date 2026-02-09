@@ -26,32 +26,41 @@ import { useToast } from "@/contexts/ToastContext";
 import "@/styles/appointments.css";
 
 export default function AppointmentsPage() {
+  // Passo atual do fluxo de marcação
   const [step, setStep] = useState(0);
   const { showToast } = useToast();
 
+  // Estado dos veículos do utilizador
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
 
+  // Estado das oficinas
   const [offices, setOffices] = useState<Office[]>([]);
   const [officesLoading, setOfficesLoading] = useState(true);
 
+  // Estado dos serviços da oficina selecionada
   const [services, setServices] = useState<Service[]>([]);
   const [servicesLoading, setServicesLoading] = useState(false);
 
+  // Estado dos horários disponíveis (turnos/slots)
   const [shifts, setShifts] = useState<AvailabilitySlot[]>([]);
   const [shiftsLoading, setShiftsLoading] = useState(false);
 
+  // Seleções do utilizador ao longo dos passos
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [selectedOffice, setSelectedOffice] = useState<Office | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedShift, setSelectedShift] = useState<number | null>(null);
 
+  // Observações da marcação e estado de criação
   const [description, setDescription] = useState("");
   const [creating, setCreating] = useState(false);
 
+  // Mês atualmente visível no calendário
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  // Carregar veículos do utilizador ao entrar na página
   useEffect(() => {
     getMyVehicles()
       .then(setVehicles)
@@ -61,6 +70,7 @@ export default function AppointmentsPage() {
       .finally(() => setVehiclesLoading(false));
   }, [showToast]);
 
+  // Carregar lista de oficinas ao entrar na página
   useEffect(() => {
     getOffices()
       .then(setOffices)
@@ -70,6 +80,7 @@ export default function AppointmentsPage() {
       .finally(() => setOfficesLoading(false));
   }, [showToast]);
 
+  // Quando a oficina muda, carregar serviços dessa oficina
   useEffect(() => {
     if (!selectedOffice) return;
 
@@ -96,41 +107,20 @@ export default function AppointmentsPage() {
 
     loadServices();
 
+    // Cancelar atualização se o componente for desmontado
     return () => {
       cancelled = true;
     };
   }, [selectedOffice, showToast]);
 
-const [brands, setBrands] = useState([]);
-const [models, setModels] = useState([]);
-
-useEffect(() => {
-  // Fetch BRANDS
-  fetch('http://localhost:4000/api/brands')
-    .then(r => r.json())
-    .then(setBrands)
-    .catch(err => console.error("Brands error:", err));
-
-  // Fetch MODELS  
-  fetch('http://localhost:4000/api/models')
-    .then(r => r.json())
-    .then(data => {
-      console.log("🚗 20 MODELS:", data.length);
-      setModels(data);
-    })
-    .catch(err => console.error("Models error:", err));
-}, []);
-
-
+  // Quando está no passo 3 e há oficina, serviço e data, carregar horários disponíveis
   useEffect(() => {
     if (step !== 3) return;
     if (!selectedOffice || !selectedService || !selectedDate) return;
 
-  const officeId = Number(selectedOffice.id); 
-const serviceId = selectedService._id;      
-const date = selectedDate.toISOString().slice(0, 10);
-
-
+    const officeId = Number(selectedOffice.id);
+    const serviceId = selectedService._id;
+    const date = selectedDate.toISOString().slice(0, 10);
 
     let cancelled = false;
 
@@ -162,14 +152,17 @@ const date = selectedDate.toISOString().slice(0, 10);
 
     loadAvailability();
 
+    // Cancelar atualização se o componente for desmontado
     return () => {
       cancelled = true;
     };
   }, [step, selectedDate, selectedOffice, selectedService, showToast]);
 
+  // Formatar texto do mês (ex.: “janeiro 2026”)
   const formatMonth = (date: Date) =>
     date.toLocaleDateString("pt-PT", { month: "long", year: "numeric" });
 
+  // Formatar duração em minutos para um texto legível
   function formatDuration(minutes: number): string {
     if (minutes < 60) return `${minutes} min`;
     const hours = Math.floor(minutes / 60);
@@ -178,6 +171,7 @@ const date = selectedDate.toISOString().slice(0, 10);
     return `${hours}h ${remainingMinutes}min`;
   }
 
+  // Gerar matriz de dias para o calendário (inclui espaços vazios no início da semana)
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -192,9 +186,11 @@ const date = selectedDate.toISOString().slice(0, 10);
 
   const days = getDaysInMonth(currentMonth);
 
+  // Hoje sem horas (para comparação de datas)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Data mínima que o utilizador pode selecionar
   const minSelectableDate = new Date(today);
   minSelectableDate.setDate(today.getDate() + 1);
   if (selectedService) {
@@ -203,6 +199,7 @@ const date = selectedDate.toISOString().slice(0, 10);
     );
   }
 
+  // Definição dos passos do assistente de marcação
   const steps = [
     { id: 0, label: "Veículo", icon: Car },
     { id: 1, label: "Oficina", icon: MapPin },
@@ -211,6 +208,7 @@ const date = selectedDate.toISOString().slice(0, 10);
     { id: 4, label: "Confirmar", icon: Bookmark },
   ];
 
+  // Criar marcação com base nas escolhas do utilizador
   async function handleCreateAppointment() {
     if (
       !selectedVehicle ||
@@ -237,13 +235,12 @@ const date = selectedDate.toISOString().slice(0, 10);
 
       showToast("Marcação criada com sucesso!", "success");
       window.location.href = "/my-appointments";
-      
     } catch (err: unknown) {
-      if(err instanceof Error && err.message) {
+      if (err instanceof Error && err.message) {
         showToast(err.message, "error");
         return;
       } else {
-      showToast("Erro ao criar a marcação.", "error");
+        showToast("Erro ao criar a marcação.", "error");
       }
     } finally {
       setCreating(false);
@@ -252,11 +249,13 @@ const date = selectedDate.toISOString().slice(0, 10);
 
   return (
     <div className="appointments-card">
+      {/* Cabeçalho principal da página */}
       <section className="appointments-header">
         <h1>Agendar Serviço</h1>
-        <p>Selecione a oficina, serviço e data pretendidos.</p>
+        <p>Selecione o veículo, oficina, serviço e data pretendidos.</p>
       </section>
 
+      {/* Barra de passos (wizard) */}
       <section className="appointments-steps">
         <div className="steps-container">
           {steps.map((s, i) => (
@@ -278,7 +277,9 @@ const date = selectedDate.toISOString().slice(0, 10);
         </div>
       </section>
 
+      {/* Conteúdo principal que muda consoante o passo */}
       <section className="appointments-content">
+        {/* Passo 0: escolher veículo */}
         {step === 0 && (
           <div className="card-block">
             <h2>Selecione o veículo</h2>
@@ -296,15 +297,25 @@ const date = selectedDate.toISOString().slice(0, 10);
                     onClick={() => setSelectedVehicle(v)}
                   >
                     <div className="car-title">
-                      <Image
-                        src={v.brandImage}
-                        alt={v.brand}
-                        width={28}
-                        height={28}
-                        unoptimized
-                      />
+                      {/* Imagem da marca, com fallback para iniciais */}
+                      {v.brandImage ? (
+                        <Image
+                          src={v.brandImage}
+                          alt={`${v.brand || "Marca"} logo`}
+                          width={28}
+                          height={28}
+                          unoptimized
+                          className="rounded object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-[28px] h-[28px] bg-gray-200 rounded flex items-center justify-center flex-shrink-0 mr-2">
+                          <span className="text-xs text-gray-500 font-medium">
+                            {v.brand?.[0]?.toUpperCase() || "C"}
+                          </span>
+                        </div>
+                      )}
                       <strong>
-                        {v.brand} {v.model}
+                        {v.brand || "Marca"} {v.model || "Modelo"}
                       </strong>
                     </div>
 
@@ -318,7 +329,7 @@ const date = selectedDate.toISOString().slice(0, 10);
                         v.color,
                       ]
                         .filter(Boolean)
-                        .join(" · ")}
+                        .join(" · ") || "—"}
                     </small>
                   </button>
                 ))}
@@ -337,6 +348,7 @@ const date = selectedDate.toISOString().slice(0, 10);
           </div>
         )}
 
+        {/* Passo 1: escolher oficina */}
         {step === 1 && (
           <div className="card-block">
             <h2>Selecione uma oficina</h2>
@@ -387,6 +399,7 @@ const date = selectedDate.toISOString().slice(0, 10);
           </div>
         )}
 
+        {/* Passo 2: escolher serviço */}
         {step === 2 && (
           <div className="card-block">
             <h2>Selecione o serviço</h2>
@@ -441,8 +454,10 @@ const date = selectedDate.toISOString().slice(0, 10);
           </div>
         )}
 
+        {/* Passo 3: escolher data e horário */}
         {step === 3 && (
           <div className="calendar-grid">
+            {/* Calendário de seleção de dia */}
             <div className="calendar">
               <div className="calendar-header">
                 <button
@@ -513,6 +528,7 @@ const date = selectedDate.toISOString().slice(0, 10);
               </div>
             </div>
 
+            {/* Lista de horários disponíveis para a data escolhida */}
             <div className="slots">
               <h3>Horários disponíveis</h3>
 
@@ -543,31 +559,32 @@ const date = selectedDate.toISOString().slice(0, 10);
                   ))}
                 </div>
               )}
-            </div>
 
-            <div className="actions full-width">
-              <button
-                className="secondary-btn full"
-                onClick={() => {
-                  setSelectedDate(null);
-                  setSelectedShift(null);
-                  setShifts([]);
-                  setStep(2);
-                }}
-              >
-                Voltar
-              </button>
-              <button
-                className="primary-btn full"
-                disabled={!selectedDate || selectedShift === null}
-                onClick={() => setStep(4)}
-              >
-                Continuar
-              </button>
+              <div className="actions full-width">
+                <button
+                  className="secondary-btn full"
+                  onClick={() => {
+                    setSelectedDate(null);
+                    setSelectedShift(null);
+                    setShifts([]);
+                    setStep(2);
+                  }}
+                >
+                  Voltar
+                </button>
+                <button
+                  className="primary-btn full"
+                  disabled={!selectedDate || selectedShift === null}
+                  onClick={() => setStep(4)}
+                >
+                  Continuar
+                </button>
+              </div>
             </div>
           </div>
         )}
 
+        {/* Passo 4: ecrã de confirmação */}
         {step === 4 && (
           <div className="confirm-card">
             <h2>Confirmar marcação</h2>
@@ -578,9 +595,10 @@ const date = selectedDate.toISOString().slice(0, 10);
                   <Car size={18} />
                   <span>Veículo</span>
                 </div>
-                <strong>{selectedVehicle?.brand} {selectedVehicle?.model}</strong>
+                <strong>
+                  {selectedVehicle?.brand} {selectedVehicle?.model}
+                </strong>
               </div>
-
 
               <div className="summary-row">
                 <div className="summary-label">
@@ -610,11 +628,12 @@ const date = selectedDate.toISOString().slice(0, 10);
               </div>
             </div>
 
+            {/* Campo de observações opcionais */}
             <div className="form-group">
               <label>Observações (opcional)</label>
               <textarea
                 rows={4}
-                placeholder="Ex: barulho ao travar, revisão antes de viagem, etc."
+                placeholder="Ex.: barulho ao travar, revisão antes de viagem, etc."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

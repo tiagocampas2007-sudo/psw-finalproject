@@ -160,34 +160,44 @@ export default function GaragePage() {
           <div key={v.id} className="vehicle-card">
             <div className="vehicle-main">
               <div className="vehicle-brand">
-                <Image
-                  src={v.brandImage}
-                  alt={v.brand}
-                  width={50}
-                  height={50}
-                  unoptimized
-                />
+                {/* ✅ FIX: Image conditionnelle avec fallback */}
+                {v.brandImage ? (
+                  <Image
+                    src={v.brandImage}
+                    alt={`${v.brand || 'Marca'} logo`}
+                    width={50}
+                    height={50}
+                    unoptimized
+                    className="rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-[50px] h-[50px] bg-gray-200 rounded-lg flex items-center justify-center">
+                    <span className="text-xs text-gray-500 font-medium">
+                      {v.brand || 'Carro'}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="vehicle-details">
                 <strong className="vehicle-title">
-                  {v.brand} {v.model}
+                  {v.brand || 'Marca'} {v.model || 'Modelo'}
                 </strong>
 
                 <span className="vehicle-meta">
-                  {v.year} · {v.fuelType} · {v.gearbox} · {v.cc}cc
+                  {v.year || '—'} · {v.fuelType || '—'} · {v.gearbox || '—'} · {v.cc || '—'}cc
                 </span>
 
-                <span className="vehicle-color">Cor: {v.color}</span>
+                <span className="vehicle-color">Cor: {v.color || '—'}</span>
               </div>
             </div>
 
             <div className="vehicle-footer">
-              <div className="vehicle-plate">{v.plate}</div>
+              <div className="vehicle-plate">{v.plate || '—'}</div>
 
               <button
                 className="vehicle-remove"
-                onClick={() => askDeleteVehicle(v.id)}
+                onClick={() => askDeleteVehicle(v.id.toString())}
                 aria-label="Remover veículo"
               >
                 <Trash2 size={20} />
@@ -253,6 +263,8 @@ export default function GaragePage() {
                 placeholder="Ano"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
+                min="1900"
+                max="2030"
                 required
               />
 
@@ -287,6 +299,7 @@ export default function GaragePage() {
                 placeholder="Cilindrada (cc)"
                 value={cc}
                 onChange={(e) => setCc(e.target.value)}
+                min="1"
                 required
               />
 

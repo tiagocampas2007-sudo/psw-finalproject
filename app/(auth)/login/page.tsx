@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/contexts/ToastContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { loginUser } from "@/lib/api";
-
 import "@/styles/auth/login.css";
 
 export default function Login() {
@@ -20,30 +19,36 @@ export default function Login() {
   const { refresh } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!email || !password) {
-      showToast("Preencha todos os campos.", "error");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      await loginUser({ email, password });
-      await refresh();
-      showToast("Login efetuado com sucesso.", "success");
-      router.push("/");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        showToast(err.message, "error");
-      } else {
-        showToast("Erro ao efetuar login.", "error");
-      }
-    } finally {
-      setLoading(false);
-    }
+  if (!email || !password) {
+    showToast("Preencha todos os campos.", "error");
+    return;
   }
+
+  setLoading(true);
+
+  try {
+    const loginData = await loginUser({ email, password });
+    console.log('🎉 Login OK, role:', loginData.role);
+    
+    await refresh();
+    showToast("Login efetuado com sucesso.", "success");
+    
+    // 🔥 SEMPRE VAI PARA /dashboard (ÚNICO!)
+    router.push("/dashboard");  // ← CORRIGIDO!
+    
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      showToast(err.message, "error");
+    } else {
+      showToast("Erro ao efetuar login.", "error");
+    }
+  } finally {
+    setLoading(false);
+  }
+}
+
 
   return (
     <div className="login-layout">
@@ -102,18 +107,17 @@ export default function Login() {
         </div>
       </div>
 
-   <div className="login-image">
-  <Image
-    src="/login/background.jpg"
-    alt="Login background"
-    fill
-    priority
-    loading="eager"
-    sizes="100vw"
-  />
-  <div className="login-image-overlay" />
-</div>
-
+      <div className="login-image">
+        <Image
+          src="/login/background.jpg"
+          alt="Login background"
+          fill
+          priority
+          loading="eager"
+          sizes="100vw"
+        />
+        <div className="login-image-overlay" />
+      </div>
     </div>
   );
 }
